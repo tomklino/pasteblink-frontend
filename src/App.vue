@@ -5,6 +5,7 @@
       <h1 v-if="session.linked && !session.active">In session, now scan the other device</h1>
       <h1 v-if="session.active">In active session!</h1>
     </div>
+    <canvas v-if="!session.linked" id="canvas" ref="qrcanvas"></canvas>
     <div id="session_view" v-if="session.linked">
       <input type="text" v-model='message' v-bind:disabled="!session.active"/>
       <input type="button" v-on:click='sendMessage' value="send message" v-bind:disabled="!session.active"/>
@@ -15,9 +16,15 @@
 <script>
 /* eslint-disable */
 import HelloWorld from '@/components/HelloWorld.vue'
+import QRCode from 'qrcode'
+
 export default {
   name: 'app',
   methods: {
+    displayQR(url) {
+      console.log('trying to display', url)
+      QRCode.toCanvas(this.$refs['qrcanvas'], url)
+    },
     async sendMessage() {
       console.log("sending the message:", this.message)
       await this.socket.send(JSON.stringify({
@@ -35,6 +42,7 @@ export default {
       switch (message.type) {
         case 'server-init':
           this.my_client_id = message.client_id
+          this.displayQR(`http://192.168.1.15:3000/client/${this.my_client_id}`)
           break;
         case 'linked':
           this.session.linked = true;
