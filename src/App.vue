@@ -1,9 +1,14 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-    <input type="text" v-model='message' />
-    <input type="button" v-on:click='sendMessage' value="send message" />
+    <div id="server_message">
+      <h1 v-if="!session.linked">Welcome! your client_id: {{ my_client_id }}</h1>
+      <h1 v-if="session.linked && !session.active">In session, now scan the other device</h1>
+      <h1 v-if="session.active">In active session!</h1>
+    </div>
+    <div id="session_view" v-if="session.linked">
+      <input type="text" v-model='message' v-bind:disabled="!session.active"/>
+      <input type="button" v-on:click='sendMessage' value="send message" v-bind:disabled="!session.active"/>
+    </div>
   </div>
 </template>
 
@@ -15,20 +20,43 @@ export default {
   methods: {
     async sendMessage() {
       console.log("sending the message:", this.message)
-      await this.socket.send(this.message)
+      await this.socket.send(JSON.stringify({
+        type: 'peer_message',
+        text: this.message
+      }))
       this.message = '';
     }
   },
   mounted() {
     this.socket = new WebSocket('ws://localhost:8888');
-    this.socket.onmessage = (data) => {
-      console.log('got a message:', data)
+    this.socket.onmessage = (event) => {
+      console.log(event)
+      const message = JSON.parse(event.data)
+      switch (message.type) {
+        case 'server-init':
+          this.my_client_id = message.client_id
+          break;
+        case 'linked':
+          this.session.linked = true;
+          this.session.active = message.session_active ? true : false;
+          break;
+        case 'peer_message':
+          console.log(message.text)
+          break;
+        default:
+          console.log(message)
+      }
     }
   },
   data() {
     return {
       socket: null,
-      message: ''
+      message: '',
+      my_client_id: null,
+      session: {
+        linked: false,
+        active: false
+      }
     }
   },
   components: {
