@@ -66,14 +66,15 @@ export default {
     }
   },
   mounted() {
-    this.socket = new WebSocket('ws://localhost:8888');
+    const hostname = window.location.host.split(':')[0]
+    this.socket = new WebSocket(`ws://${hostname}:8888`);
     this.socket.onmessage = (event) => {
       console.log(event)
       const message = JSON.parse(event.data)
       switch (message.type) {
         case 'server-init':
           this.my_client_id = message.client_id
-          this.displayQR(`http://192.168.1.15:3000/client/${this.my_client_id}`)
+          this.displayQR(`http://${hostname}:3000/client/${this.my_client_id}`)
           break;
         case 'linked':
           this.session.linked = true;
