@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "test": "mocha tests/bootstrap.js --recursive tests",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
@@ -17,8 +18,13 @@
     "@vue/cli-plugin-eslint": "^3.1.5",
     "@vue/cli-service": "^3.1.4",
     "babel-eslint": "^10.0.1",
+    "chai": "^4.2.0",
     "eslint": "^5.8.0",
     "eslint-plugin-vue": "^5.0.0-0",
+    "lodash": "^4.17.11",
+    "mocha": "^5.2.0",
+    "mock-socket": "^8.0.5",
+    "puppeteer": "^1.10.0",
     "vue-template-compiler": "^2.5.17"
   },
   "eslintConfig": {
