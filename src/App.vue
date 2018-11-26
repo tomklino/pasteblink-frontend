@@ -18,6 +18,7 @@
       </div>
     </div>
     <canvas v-if="!session.linked" id="canvas" ref="qrcanvas"></canvas>
+    <div id="qr_url" v-bind:hidden="!debug">{{qr_url}}</div>
     <div id="session_view" v-if="session.linked">
       <form v-on:submit.prevent="sendMessage">
         <textarea rows="20" cols="100" v-model='message' v-bind:disabled="!session.active"/>
@@ -66,15 +67,16 @@ export default {
     }
   },
   mounted() {
-    const hostname = window.location.host.split(':')[0]
-    this.socket = new WebSocket(`ws://${hostname}:8888`);
+    const hostname = window.location.host
+    this.socket = new WebSocket(`ws://${hostname.split(':')[0]}:8888`);
     this.socket.onmessage = (event) => {
       console.log(event)
       const message = JSON.parse(event.data)
       switch (message.type) {
         case 'server-init':
-          this.my_client_id = message.client_id
-          this.displayQR(`http://${hostname}/client/${this.my_client_id}`)
+          this.my_client_id = message.client_id;
+          this.qr_url = `http://${hostname}/client/${this.my_client_id}`
+          this.displayQR(this.qr_url)
           break;
         case 'linked':
           this.session.linked = true;
@@ -91,6 +93,7 @@ export default {
   },
   data() {
     return {
+      debug: false,
       clear_notification_timeout: null,
       socket: null,
       last_notification: null,
