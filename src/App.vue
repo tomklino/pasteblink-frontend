@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <h1>HI</h1>
     <div id="notifications">
       {{ last_notification }}
     </div>
