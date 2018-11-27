@@ -2,10 +2,10 @@
   <div id="clips">
     <div class="message" v-for="(message, index) in messages" :key="index">
       <div class="message_text">{{message}}</div>
-      <button type="button"
+      <v-btn color="primary"
             v-clipboard:copy="message"
             v-clipboard:success="emitCopy"
-            v-clipboard:error="emitCopyError">Copy!</button>
+            v-clipboard:error="emitCopyError">Copy!</v-btn>
     </div>
   </div>
 </template>

@@ -1,12 +1,14 @@
 <template>
   <div id="active_session_view">
     <NotificationBox ref="notificationbox" />
-    <Clips
-      v-bind:messages="messages"
-      v-on:copy="onCopy" />
-    <form v-on:submit.prevent="sendMessage">
-      <textarea rows="20" cols="100" v-model='message' />
-      <input type="submit" value="send message" />
+    <div id="clips_container">
+      <Clips
+        v-bind:messages="messages"
+        v-on:copy="onCopy" />
+      </div>
+    <form>
+      <v-textarea outline label="paste here" rows="20" cols="30" v-model='message' />
+      <v-btn large color="primary" v-on:click.native="sendMessage" >send</v-btn>
     </form>
   </div>
 </template>
@@ -48,6 +50,12 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+#clips_container {
+  overflow-y: scroll;
+  display: block;
+  height: 200px;
+}
+
 .message_text {
   border: dotted;
   padding: 12px;

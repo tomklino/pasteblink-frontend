@@ -1,5 +1,11 @@
 <template>
-  <div id="app">
+  <v-app id="app">
+    <v-toolbar color="indigo" dark fixed >
+      <v-toolbar-title>PasteBlink - CopyPaste between devices</v-toolbar-title>
+    </v-toolbar>
+    <div id="early_alpha_message">
+      Early alpha - currenty only supports Computer to Computer (same room)
+    </div>
     <div id="server_message">
       <h1 v-if="!session.linked">Welcome! your client_id: {{ my_client_id }}</h1>
       <h1 v-if="session.linked && !session.active">In session, now scan the other device</h1>
@@ -8,17 +14,19 @@
 
     <QRComponent v-if="!session.linked" v-bind:qr_url="qr_url" />
 
-    <ActiveSessionView v-if="session.linked"
+    <ActiveSessionView v-if="session.active"
       v-on:sendMessage="forwardMessageToSocket"
       v-bind:messages="messages" />
 
-  </div>
+    <Instructions ref="instructions" v-if="!session.active"/>
+  </v-app>
 </template>
 
 <script>
 /* eslint-disable */
 import QRComponent from '@/components/QRComponent.vue'
 import ActiveSessionView from '@/components/ActiveSessionView.vue'
+import Instructions from '@/components/Instructions.vue'
 
 export default {
   name: 'app',
@@ -44,6 +52,7 @@ export default {
         case 'linked':
           this.session.linked = true;
           this.session.active = message.session_active ? true : false;
+          this.$refs.instructions.toStep(message.session_active ? 3 : 2)
           break;
         case 'peer_message':
           console.log(message.text)
@@ -69,7 +78,8 @@ export default {
   },
   components: {
     QRComponent,
-    ActiveSessionView
+    ActiveSessionView,
+    Instructions
   }
 }
 </script>
