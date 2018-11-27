@@ -1,6 +1,5 @@
 <template>
   <div id="clips">
-    <h1>CLIPS:</h1>
     <div class="message" v-for="(message, index) in messages" :key="index">
       <div class="message_text">{{message}}</div>
       <button type="button"

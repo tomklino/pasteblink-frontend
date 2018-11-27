@@ -1,46 +1,33 @@
 <template>
   <div id="app">
-    <NotificationBox ref="notificationbox" />
     <div id="server_message">
       <h1 v-if="!session.linked">Welcome! your client_id: {{ my_client_id }}</h1>
       <h1 v-if="session.linked && !session.active">In session, now scan the other device</h1>
       <h1 v-if="session.active">In active session!</h1>
     </div>
-    <Clips v-if="session.active" v-bind:messages="messages"
-      v-on:copy="onCopy"></Clips>
+
     <QRComponent v-if="!session.linked" v-bind:qr_url="qr_url" />
-    <div id="session_view" v-if="session.linked">
-      <form v-on:submit.prevent="sendMessage">
-        <textarea rows="20" cols="100" v-model='message' v-bind:disabled="!session.active"/>
-        <input type="submit" value="send message" v-bind:disabled="!session.active"/>
-      </form>
-    </div>
+
+    <ActiveSessionView v-if="session.linked"
+      v-on:sendMessage="forwardMessageToSocket"
+      v-bind:messages="messages" />
+
   </div>
 </template>
 
 <script>
 /* eslint-disable */
-import Clips from '@/components/Clips.vue'
 import QRComponent from '@/components/QRComponent.vue'
-import NotificationBox from '@/components/NotificationBox.vue'
+import ActiveSessionView from '@/components/ActiveSessionView.vue'
 
 export default {
   name: 'app',
   methods: {
-    onCopy(e) {
-      if(e) {
-        this.$refs.notificationbox.displayNotification({ message: "Failed to copy :-(" })
-        return;
-      }
-      this.$refs.notificationbox.displayNotification({ message: "Copied!", timeout: 1000 })
-    },
-    async sendMessage() {
-      console.log("sending the message:", this.message)
+    async forwardMessageToSocket(message) {
       await this.socket.send(JSON.stringify({
         type: 'peer_message',
-        text: this.message
+        text: message
       }))
-      this.message = '';
     }
   },
   mounted() {
@@ -72,8 +59,6 @@ export default {
       debug: false,
       qr_url: '',
       socket: null,
-      last_notification: null,
-      message: '',
       messages: [],
       my_client_id: null,
       session: {
@@ -83,9 +68,8 @@ export default {
     }
   },
   components: {
-    Clips,
     QRComponent,
-    NotificationBox
+    ActiveSessionView
   }
 }
 </script>
