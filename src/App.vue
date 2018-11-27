@@ -1,8 +1,6 @@
 <template>
   <div id="app">
-    <div id="notifications">
-      {{ last_notification }}
-    </div>
+    <NotificationBox ref="notificationbox" />
     <div id="server_message">
       <h1 v-if="!session.linked">Welcome! your client_id: {{ my_client_id }}</h1>
       <h1 v-if="session.linked && !session.active">In session, now scan the other device</h1>
@@ -24,28 +22,17 @@
 /* eslint-disable */
 import Clips from '@/components/Clips.vue'
 import QRComponent from '@/components/QRComponent.vue'
+import NotificationBox from '@/components/NotificationBox.vue'
 
 export default {
   name: 'app',
   methods: {
     onCopy(e) {
       if(e) {
-        this.last_notification = "Failed to copy :-("
-        this.clearNotification();
+        this.$refs.notificationbox.displayNotification({ message: "Failed to copy :-(" })
         return;
       }
-      this.last_notification = "Copied!"
-      this.clearNotification()
-    },
-    clearNotification(opts) {
-      const { after = 1000 } = opts || {};
-      console.log(after)
-      if(this.clear_notification_timeout) {
-        clearTimeout(this.clear_notification_timeout)
-      }
-      this.clear_notification_timeout = setTimeout(() => {
-        this.last_notification = '';
-      }, after)
+      this.$refs.notificationbox.displayNotification({ message: "Copied!", timeout: 1000 })
     },
     async sendMessage() {
       console.log("sending the message:", this.message)
@@ -84,7 +71,6 @@ export default {
     return {
       debug: false,
       qr_url: '',
-      clear_notification_timeout: null,
       socket: null,
       last_notification: null,
       message: '',
@@ -98,7 +84,8 @@ export default {
   },
   components: {
     Clips,
-    QRComponent
+    QRComponent,
+    NotificationBox
   }
 }
 </script>
