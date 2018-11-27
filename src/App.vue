@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <h1>HI</h1>
     <div id="notifications">
       {{ last_notification }}
     </div>
@@ -8,17 +9,9 @@
       <h1 v-if="session.linked && !session.active">In session, now scan the other device</h1>
       <h1 v-if="session.active">In active session!</h1>
     </div>
-    <div id="clips" v-if="session.active">
-      <div class="message" v-for="(message, index) in messages" :key="index">
-        <div class="message_text">{{message}}</div>
-        <button type="button"
-              v-clipboard:copy="message"
-              v-clipboard:success="onCopy"
-              v-clipboard:error="onCopyError">Copy!</button>
-      </div>
-    </div>
-    <canvas v-if="!session.linked" id="canvas" ref="qrcanvas"></canvas>
-    <div id="qr_url" v-bind:hidden="!debug">{{qr_url}}</div>
+    <Clips v-if="session.active" v-bind:messages="messages"
+      v-on:copy="onCopy"></Clips>
+    <QRComponent v-if="!session.linked" v-bind:qr_url="qr_url" />
     <div id="session_view" v-if="session.linked">
       <form v-on:submit.prevent="sendMessage">
         <textarea rows="20" cols="100" v-model='message' v-bind:disabled="!session.active"/>
@@ -30,18 +23,19 @@
 
 <script>
 /* eslint-disable */
-import HelloWorld from '@/components/HelloWorld.vue'
-import QRCode from 'qrcode'
+import Clips from '@/components/Clips.vue'
+import QRComponent from '@/components/QRComponent.vue'
 
 export default {
   name: 'app',
   methods: {
-    onCopy() {
+    onCopy(e) {
+      if(e) {
+        this.last_notification = "Failed to copy :-("
+        this.clearNotification();
+        return;
+      }
       this.last_notification = "Copied!"
-      this.clearNotification()
-    },
-    onCopyError() {
-      this.last_notification = "Failed to copy :-("
       this.clearNotification()
     },
     clearNotification(opts) {
@@ -53,9 +47,6 @@ export default {
       this.clear_notification_timeout = setTimeout(() => {
         this.last_notification = '';
       }, after)
-    },
-    displayQR(url) {
-      QRCode.toCanvas(this.$refs['qrcanvas'], url)
     },
     async sendMessage() {
       console.log("sending the message:", this.message)
@@ -76,7 +67,6 @@ export default {
         case 'server-init':
           this.my_client_id = message.client_id;
           this.qr_url = `http://${hostname}/client/${this.my_client_id}`
-          this.displayQR(this.qr_url)
           break;
         case 'linked':
           this.session.linked = true;
@@ -94,6 +84,7 @@ export default {
   data() {
     return {
       debug: false,
+      qr_url: '',
       clear_notification_timeout: null,
       socket: null,
       last_notification: null,
@@ -107,28 +98,13 @@ export default {
     }
   },
   components: {
-    HelloWorld
+    Clips,
+    QRComponent
   }
 }
 </script>
 
 <style scoped>
-.message_text {
-  border: dotted;
-  padding: 12px;
-  margin-top: 6px;
-  margin-bottom: 6px;
-  background-color: lightgrey;
-}
-
-.message button {
-  margin-left: 8px;
-}
-
-.message * {
-  display: inline-block;
-}
-
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
