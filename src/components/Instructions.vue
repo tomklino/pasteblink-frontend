@@ -17,7 +17,7 @@
         <v-stepper-content step="2">
           <v-card color="grey lighten-2" class="mb-5" height="200px">
             <v-card-title primary-title>
-              <h3>Open pasteblink.com in the other computer - and scan its barcode with the same phone</h3>
+              <h3>Open {{hostname}} in the other computer - and scan its barcode using the same phone</h3>
             </v-card-title>
           </v-card>
         </v-stepper-content>
@@ -34,8 +34,12 @@ export default {
       this.e1 = step;
     }
   },
+  created() {
+    this.hostname = window.location.host;
+  },
   data() {
     return {
+      hostname: '',
       e1: 0
     }
   }

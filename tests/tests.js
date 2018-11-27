@@ -2,7 +2,7 @@ const fs = require('fs')
 const test_config_file = '/tmp/pasteblink_test_config.json'
 
 describe('sample test', function () {
-  this.timeout(15000)
+  this.timeout('15s')
   let page_1, page_2, controller_page;
   let incognitoContext;
 
@@ -22,21 +22,14 @@ describe('sample test', function () {
   })
 
   it('should have the correct page title', async function () {
-    this.slow(300)
+    this.timeout('2s')
+    this.slow('0.3s')
     expect(await page_1.title()).to.eql('pasteblink-frontend');
   });
 
-  it('should display the userid when ws server sends it', async function() {
-    this.slow(1000)
-    let HEADING_SELECTOR = "#server_message > h1"
-    await page_1.waitFor(HEADING_SELECTOR)
-    heading = await page_1.$eval(HEADING_SELECTOR, heading => heading.innerText);
-
-    expect(heading).to.match(/Welcome! your client_id\: [0-9]+/)
-  })
-
   it('should pair 2 users together', async function() {
-    this.slow(2500)
+    this.timeout('5s')
+    this.slow('2.5s')
     let QR_URL_SELECTOR = "#qr_url"
 
     await page_1.waitFor(QR_URL_SELECTOR)

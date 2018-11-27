@@ -29,7 +29,7 @@ export default {
         notificationbox.displayNotification({ message: "Failed to copy :-(" })
         return;
       }
-      notificationbox.displayNotification({ message: "Copied!", timeout: 1000 })
+      notificationbox.displayNotification({ message: "Copied!", timeout: 1400 })
     },
     sendMessage() {
       this.$emit('sendMessage', this.message)

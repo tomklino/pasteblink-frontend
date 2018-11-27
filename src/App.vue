@@ -7,8 +7,6 @@
       Early alpha - currenty only supports Computer to Computer (same room)
     </div>
     <div id="server_message">
-      <h1 v-if="!session.linked">Welcome! your client_id: {{ my_client_id }}</h1>
-      <h1 v-if="session.linked && !session.active">In session, now scan the other device</h1>
       <h1 v-if="session.active">In active session!</h1>
     </div>
 

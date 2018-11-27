@@ -1,7 +1,12 @@
 <template>
-  <div id="notifications">
-    {{ message }}
-  </div>
+  <v-snackbar
+      v-model="snackbar"
+      :timeout="timeout"
+      :top="true"
+      :vertical="false"
+    >
+    {{message}}
+  </v-snackbar>
 </template>
 
 <script>
@@ -12,21 +17,15 @@ export default {
   },
   methods: {
     displayNotification({ message, timeout = 5000 }) {
-      console.log("displaying message")
       this.message = message;
-      this.clearNotification(timeout)
-    },
-    clearNotification(after) {
-      if(this.clear_notification_timeout) {
-        clearTimeout(this.clear_notification_timeout)
-      }
-      this.clear_notification_timeout = setTimeout(() => {
-        this.message = '';
-      }, after)
+      this.timeout = timeout;
+      this.snackbar = true;
     }
   },
   data() {
     return {
+      timeout: 5000,
+      snackbar: false,
       clear_notification_timeout: null,
       message: ''
     }
