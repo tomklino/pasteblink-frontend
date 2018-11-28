@@ -47,7 +47,7 @@ export default {
       switch (message.type) {
         case 'server-init':
           this.my_client_id = message.client_id;
-          this.qr_url = `http://${hostname}/client/${this.my_client_id}`
+          this.qr_url = `${protocol}://${hostname}/client/${this.my_client_id}`
           break;
         case 'linked':
           this.session.linked = true;
