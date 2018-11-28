@@ -38,7 +38,9 @@ export default {
   },
   mounted() {
     const hostname = window.location.host
-    this.socket = new WebSocket(`ws://${hostname.split(':')[0]}:8888`);
+    const protocol = window.location.protocol
+    const wsProto = protocol === "https:" ? "wss" : "ws"
+    this.socket = new WebSocket(`${wsProto}://${hostname.split(':')[0]}:8888`);
     this.socket.onmessage = (event) => {
       console.log(event)
       const message = JSON.parse(event.data)
