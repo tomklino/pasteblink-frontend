@@ -1,5 +1,7 @@
 version: '3.0'
 services:
+  # frontend:
+  #   image: "gcr.io/pasteblink-222512/pasteblink-frontend:v2"
   frontend:
     image: "mhart/alpine-node:11"
     volumes:
