@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 import json
+import sys
 from subprocess import call, check_output
 
 call(["docker-compose", "up", "-d"])
@@ -19,6 +20,8 @@ with open(test_config_file, "w") as f:
 
 print server_address
 
-call(["npm", "test"])
+test_exit_code = call(["npm", "test"])
 
 call(["docker-compose", "down"])
+
+sys.exit(test_exit_code)

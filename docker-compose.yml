@@ -9,10 +9,18 @@ services:
     working_dir: "/code"
     command: "npm run serve"
   server:
-    image: "gcr.io/pasteblink-222512/pasteblink:v4"
-    ports:
-      - "8888:8888"
-      - "3000:3000"
-    environment:
-      - frontend_server_address=frontend:8080
-      - cookie_secret=qwweerrt
+    image: "mhart/alpine-node:11"
+    volumes:
+      - ../pasteblink:/code
+    # environment:
+    #   - CLIENT_HANDLER_DEBUG=5
+    working_dir: "/code"
+    command: "node app"
+  # server:
+  #   image: "gcr.io/pasteblink-222512/pasteblink:v4"
+  #   ports:
+  #     - "8888:8888"
+  #     - "3000:3000"
+  #   environment:
+  #     - frontend_server_address=frontend:8080
+  #     - cookie_secret=qwweerrt

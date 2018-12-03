@@ -1,7 +1,7 @@
 const fs = require('fs')
 const test_config_file = '/tmp/pasteblink_test_config.json'
 
-describe('sample test', function () {
+describe('integration tests', function () {
   this.timeout('15s')
   let page_1, page_2, controller_page;
   let incognitoContext;
@@ -46,5 +46,25 @@ describe('sample test', function () {
     heading = await page_1.$eval(HEADING_SELECTOR, heading => heading.innerText);
 
     expect(heading).to.eql("In active session!")
+  })
+
+  it('should pass messages between paired clients', async function() {
+    this.timeout('10s')
+    this.slow('5s')
+    let TEXT_AREA_SELECTOR = "#pastearea"
+    let SEND_BUTTON_SELECTOR = "button#sendbutton"
+    let CLIPS_SELECTOR = "#clips > *"
+
+    await page_1.bringToFront()
+    await page_1.waitFor(TEXT_AREA_SELECTOR)
+    await page_1.type(TEXT_AREA_SELECTOR, "hello")
+    await page_1.waitFor(SEND_BUTTON_SELECTOR)
+    await page_1.click(SEND_BUTTON_SELECTOR)
+
+    await page_2.bringToFront()
+    await page_2.waitFor(CLIPS_SELECTOR)
+    let clips = await page_2.$$(CLIPS_SELECTOR)
+    let firstClip = await clips[0].$eval(".message_text", elem => elem.innerText)
+    expect(firstClip).to.eql('hello')
   })
 })

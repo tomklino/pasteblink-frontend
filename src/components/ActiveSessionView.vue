@@ -7,8 +7,8 @@
         v-on:copy="onCopy" />
       </div>
     <form>
-      <v-textarea outline label="paste here" rows="20" cols="30" v-model='message' />
-      <v-btn large color="primary" v-on:click.native="sendMessage" >send</v-btn>
+      <v-textarea id="pastearea" outline label="paste here" rows="20" cols="30" v-model='message' />
+      <v-btn id="sendbutton" large color="primary" v-on:click.native="sendMessage" >send</v-btn>
     </form>
   </div>
 </template>

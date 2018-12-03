@@ -59,7 +59,7 @@ export default {
           this.messages.push(message.text)
           break;
         default:
-          console.log(message)
+          console.log("unrecognized type", message)
       }
     }
   },
