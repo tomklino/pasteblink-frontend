@@ -11,7 +11,7 @@
     </div>
 
     <QRComponent v-if="!session.linked" v-bind:qr_url="qr_url" />
-
+    <HowtoQuestionMark />
     <ActiveSessionView v-if="session.active"
       v-on:sendMessage="forwardMessageToSocket"
       v-bind:messages="messages" />
@@ -25,6 +25,7 @@
 import QRComponent from '@/components/QRComponent.vue'
 import ActiveSessionView from '@/components/ActiveSessionView.vue'
 import Instructions from '@/components/Instructions.vue'
+import HowtoQuestionMark from '@/components/HowtoQuestionMark.vue'
 
 export default {
   name: 'app',
@@ -79,7 +80,8 @@ export default {
   components: {
     QRComponent,
     ActiveSessionView,
-    Instructions
+    Instructions,
+    HowtoQuestionMark
   }
 }
 </script>
