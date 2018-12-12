@@ -11,9 +11,12 @@
       >help</v-icon>
       <span>How to use ClipBird</span>
     </v-tooltip>
-    <v-dialog v-model="video_card">
+    <v-dialog v-model="video_card" width="1200px" height="680px">
       <v-card>
-        <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/xkaPmNuDsQ8" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <iframe width="1120" height="630" src="https://www.youtube-nocookie.com/embed/xkaPmNuDsQ8" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <v-card-actions id="buttons">
+          <v-btn @click="video_card=false" flat color="info">Close</v-btn>
+        </v-card-actions>
       </v-card>
     </v-dialog>
   </div>
@@ -47,6 +50,11 @@ export default {
 <style scoped>
 #howto {
   min-height: 75px;
+}
+
+#buttons {
+  display: flex;
+  justify-content: flex-end;
 }
 
 </style>

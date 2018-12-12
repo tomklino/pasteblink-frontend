@@ -1,5 +1,6 @@
 <template>
   <v-app id="app">
+    <WelcomeMessage v-on:show-video="showVideo()" v-bind:showing="welcome_message_showing" />
     <v-toolbar color="indigo" dark fixed >
       <v-toolbar-title>PasteBlink - CopyPaste between devices</v-toolbar-title>
     </v-toolbar>
@@ -11,7 +12,7 @@
     </div>
 
     <QRComponent v-if="!session.linked" v-bind:qr_url="qr_url" />
-    <HowtoQuestionMark />
+    <HowtoQuestionMark ref="howto" />
     <ActiveSessionView v-if="session.active"
       v-on:sendMessage="forwardMessageToSocket"
       v-bind:messages="messages" />
@@ -26,6 +27,7 @@ import QRComponent from '@/components/QRComponent.vue'
 import ActiveSessionView from '@/components/ActiveSessionView.vue'
 import Instructions from '@/components/Instructions.vue'
 import HowtoQuestionMark from '@/components/HowtoQuestionMark.vue'
+import WelcomeMessage from '@/components/WelcomeMessage.vue'
 
 export default {
   name: 'app',
@@ -35,6 +37,10 @@ export default {
         type: 'peer_message',
         text: message
       }))
+    },
+    showVideo() {
+      this.welcome_message_showing = false;
+      this.$refs.howto.launchDialog();
     }
   },
   mounted() {
@@ -66,6 +72,7 @@ export default {
   },
   data() {
     return {
+      welcome_message_showing: true,
       debug: false,
       qr_url: '',
       socket: null,
@@ -81,7 +88,8 @@ export default {
     QRComponent,
     ActiveSessionView,
     Instructions,
-    HowtoQuestionMark
+    HowtoQuestionMark,
+    WelcomeMessage
   }
 }
 </script>
