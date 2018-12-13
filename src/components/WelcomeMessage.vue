@@ -1,6 +1,6 @@
 <template>
   <div id="welcome">
-    <v-dialog v-model="showing" max-width="700px">
+    <v-dialog v-model="show_message" max-width="700px">
       <v-card >
         <v-card-title primary-title>
           <div>
@@ -46,6 +46,11 @@ export default {
   name: 'WelcomeMessage',
   props: {
     showing: Boolean
+  },
+  data() {
+    return {
+      show_message: this.showing
+    }
   }
 }
 </script>
