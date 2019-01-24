@@ -33,8 +33,8 @@
         </v-card-title>
 
         <v-card-actions id="buttons">
-          <v-btn @click="$emit('show-video')" flat color="info">Show me how it works!</v-btn>
-          <v-btn @click="showing=false" flat color="success">Got it!</v-btn>
+          <v-btn id="show_video_button" @click="$emit('show-video')" flat color="info">Show me how it works!</v-btn>
+          <v-btn id="gotit_button" @click="show_message=false" flat color="success">Got it!</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
