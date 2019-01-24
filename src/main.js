@@ -3,6 +3,9 @@ import './plugins/vuetify'
 import App from './App.vue'
 
 import VueClipboard from 'vue-clipboard2'
+import VueScrollTo from 'vue-scrollto';
+
+Vue.use(VueScrollTo)
 
 VueClipboard.config.autoSetContainer = true // add this line
 Vue.use(VueClipboard)
