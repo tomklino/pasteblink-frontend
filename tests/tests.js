@@ -31,6 +31,14 @@ describe('integration tests', function () {
     this.timeout('5s')
     this.slow('2.5s')
     let QR_URL_SELECTOR = "#qr_url"
+    let GOTIT_BUTTON_SELECTOR = "#gotit_button"
+
+    try {
+      await page_1.waitForSelector(GOTIT_BUTTON_SELECTOR, { timeout: 500 })
+      await page_1.click(GOTIT_BUTTON_SELECTOR)
+      await page_2.waitForSelector(GOTIT_BUTTON_SELECTOR, { timeout: 500 })
+      await page_2.click(GOTIT_BUTTON_SELECTOR)
+    } catch (e) {}
 
     await page_1.waitFor(QR_URL_SELECTOR)
     let page_1_qr_url = await page_1.$eval(QR_URL_SELECTOR, div => div.innerText);
