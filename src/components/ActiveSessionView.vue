@@ -5,7 +5,8 @@
       <Clips
         v-bind:messages="messages"
         v-on:copy="onCopy" />
-      </div>
+    </div>
+    <input type="file" ref="files" id="files" name="files[]" multiple />
     <form>
       <v-textarea id="pastearea" outline label="paste here" rows="12" cols="30" v-model='message' />
       <v-btn id="sendbutton" large color="primary" v-on:click.native="sendMessage" >send</v-btn>
@@ -21,6 +22,15 @@ export default {
   name: 'ActiveSessionView',
   props: {
     messages: Array
+  },
+  mounted() {
+    const hostname = window.location.host
+    const protocol = window.location.protocol
+    this.$refs.files.addEventListener('change', (evt) => {
+      const files = evt.target.files;
+      const f = files[0]
+      this.$emit('sendFile', f)
+    }, false);
   },
   methods: {
     onCopy(e) {

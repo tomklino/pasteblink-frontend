@@ -15,6 +15,7 @@
     <HowtoQuestionMark ref="howto" />
     <ActiveSessionView v-if="session.active"
       v-on:sendMessage="forwardMessageToSocket"
+      v-on:sendFile="sendFile"
       v-bind:messages="messages" />
 
     <Instructions ref="instructions" v-if="!session.active"/>
@@ -37,6 +38,21 @@ export default {
         type: 'peer_message',
         text: message
       }))
+    },
+    async sendFile(file) {
+      const reader = new FileReader();
+      const upload_id = this.pending_uploads.push(reader) - 1
+      console.log('hello from sendFile')
+      reader.onload = () => {
+        console.log('loaded')
+        console.log(this.socket)
+        this.socket.send(JSON.stringify({
+          type: 'file',
+          filename: file.name,
+          local_id: upload_id
+        }))
+      }
+      reader.readAsArrayBuffer(file)
     },
     showVideo() {
       this.welcome_message_showing = false;
@@ -63,7 +79,31 @@ export default {
           break;
         case 'peer_message':
           console.log(message.text)
-          this.messages.push(message.text)
+          this.messages.push({ type: 'plaintext', content: message.text })
+          break;
+        case 'upload':
+          const { upload_url, upload_id } = message;
+          if(upload_url === undefined || upload_id === undefined) {
+            console.log('no upload_url or upload_id provided')
+            console.log(message)
+            return;
+          }
+          const oReq = new XMLHttpRequest();
+          oReq.open("POST", upload_url, true);
+          oReq.onload = (oEvent) => {
+            console.log('uploaded')
+            this.pending_uploads.splice(upload_id, 1)
+          };
+
+          oReq.send(this.pending_uploads[upload_id].result)
+          break;
+        case 'file':
+          console.log('file message');
+          this.messages.push({
+            type: 'file',
+            filename: message.filename,
+            download_url: message.download_url
+          })
           break;
         default:
           console.log("unrecognized type", message)
@@ -77,6 +117,7 @@ export default {
       qr_url: '',
       socket: null,
       messages: [],
+      pending_uploads: [],
       my_client_id: null,
       session: {
         linked: false,

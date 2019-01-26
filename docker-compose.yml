@@ -1,13 +1,13 @@
 version: '3.0'
 services:
-  frontend:
-    image: "gcr.io/pasteblink-222512/pasteblink-frontend:v9"
   # frontend:
-  #   image: "mhart/alpine-node:11"
-  #   volumes:
-  #     - ./:/code
-  #   working_dir: "/code"
-  #   command: "npm run serve"
+  #   image: "gcr.io/pasteblink-222512/pasteblink-frontend:v13"
+  frontend:
+    image: "mhart/alpine-node:11"
+    volumes:
+      - ./:/code
+    working_dir: "/code"
+    command: "npm run serve"
   server:
     image: "mhart/alpine-node:11"
     volumes:
@@ -16,11 +16,14 @@ services:
     #   - CLIENT_HANDLER_DEBUG=5
     working_dir: "/code"
     command: "node app"
+    environment:
+      - FILE_SAVER_DEBUG=5
+      - CLIENT_HANDLER_DEBUG=5
     ports:
       - "8888:8888"
       - "3000:3000"
   # server:
-  #   image: "gcr.io/pasteblink-222512/pasteblink:v16"
+  #   image: "gcr.io/pasteblink-222512/pasteblink:v18"
   #   ports:
   #     - "8888:8888"
   #     - "3000:3000"
