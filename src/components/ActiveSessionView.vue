@@ -6,11 +6,10 @@
         v-bind:messages="messages"
         v-on:copy="onCopy" />
     </div>
-    <input type="file" ref="files" id="files" name="files[]" multiple />
-    <form>
-      <v-textarea id="pastearea" outline label="paste here" rows="12" cols="30" v-model='message' />
-      <v-btn id="sendbutton" large color="primary" v-on:click.native="sendMessage" >send</v-btn>
-    </form>
+    <v-btn id="send_file" large color="primary" ref="send_file" v-on:click.native="openFileSelection">send file</v-btn>
+    <v-btn id="sendbutton" large color="primary" v-on:click.native="sendMessage" >send snippet</v-btn>
+    <input style="display: none" type="file" ref="files" id="files" name="files[]" multiple />
+    <v-textarea id="pastearea" ref="pastearea" outline label="paste here" rows="12" cols="30" v-model='message' />
   </div>
 </template>
 
@@ -24,8 +23,6 @@ export default {
     messages: Array
   },
   mounted() {
-    const hostname = window.location.host
-    const protocol = window.location.protocol
     this.$refs.files.addEventListener('change', (evt) => {
       const files = evt.target.files;
       const f = files[0]
@@ -33,6 +30,9 @@ export default {
     }, false);
   },
   methods: {
+    openFileSelection() {
+      this.$refs.files.click();
+    },
     onCopy(e) {
       let { notificationbox } = this.$refs;
       if(e) {
@@ -42,6 +42,12 @@ export default {
       notificationbox.displayNotification({ message: "Copied!", timeout: 1400 })
     },
     sendMessage() {
+      let { displayNotification } = this.$refs.notificationbox;
+      if(this.message === '') {
+        displayNotification({ message: "Paste something to send it" })
+        this.$refs['pastearea'].focus()
+        return;
+      }
       this.$emit('sendMessage', this.message)
       this.message = '';
     }

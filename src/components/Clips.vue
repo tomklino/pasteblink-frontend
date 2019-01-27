@@ -1,8 +1,8 @@
 <template>
   <div>
-    <v-layout id="clips" ref="clips" justify-center row wrap>
+    <v-layout id="clips" ref="clips" justify-left row wrap>
       <v-flex xs4 class="message pa-2" v-for="(message, index) in messages" :key="index">
-        <v-card v-if="message.type === 'plaintext'" color="blue-grey darken-2" class="white--text">
+        <v-card v-if="message.type === 'plaintext'" color="blue-grey darken-2" class="white--text clipcard">
           <v-card-title primary-title>
             <div class="message_text">
               {{messagePreview(message.content)}}
@@ -13,11 +13,11 @@
                 v-clipboard:copy="message"
                 v-clipboard:success="emitCopy"
                 v-clipboard:error="emitCopyError">
-                  Copy
+                  <v-icon>file_copy</v-icon> &nbsp Copy
             </v-btn>
           </v-card-actions>
         </v-card>
-        <v-card v-if="message.type === 'file'" color="blue-grey darken-2" class="white--text">
+        <v-card v-if="message.type === 'file'" color="blue-grey darken-2" class="white--text clipcard">
           <v-card-title primary-title>
             <div class="message_text">
               {{message.filename}}
@@ -27,8 +27,7 @@
             <v-btn v-on:click="download" color="primary">
               <a style="display: hidden"
                 v-bind:href="message.download_url" v-bind:download="message.filename"></a>
-                  Download
-              <!-- </a> -->
+                  <v-icon>save</v-icon> &nbsp Save file
             </v-btn>
           </v-card-actions>
         </v-card>
@@ -74,4 +73,7 @@ export default {
   height: 200px;
 }
 
+.clipcard .message_text {
+  height: 90px;
+}
 </style>
