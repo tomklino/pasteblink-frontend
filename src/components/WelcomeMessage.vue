@@ -13,7 +13,7 @@
               <p>
                 It is designed to help teamwork efforts by allowing
                 people working on two different devices,
-                to copy and paste text or code snippets
+                to copy text or code snippets, as well as transferring files,
                 between their devices<br>
               </p>
               <p>
@@ -24,8 +24,8 @@
                 sessions, when you just met the person you're working with.<br>
               </p>
               <p>
-                ClipBird is in a very early alpha version, and does not support
-                file transfer yet. Please try it out
+                ClipBird is in a very early alpha version, and may not always
+                work as expected. Please try it out
                 and leave a feedback with your suggestion to improve.<br>
               </p>
             </div>
