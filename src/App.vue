@@ -1,5 +1,6 @@
 <template>
   <v-app id="app">
+    <NotificationBox ref="notificationbox" />
     <WelcomeMessage v-on:show-video="showVideo()" v-bind:showing="welcome_message_showing" />
     <v-toolbar color="indigo" dark fixed >
       <v-toolbar-title>PasteBlink - CopyPaste between devices</v-toolbar-title>
@@ -16,6 +17,7 @@
     <ActiveSessionView v-if="session.active"
       v-on:sendMessage="forwardMessageToSocket"
       v-on:sendFile="sendFile"
+      v-on:notification="showNotification"
       v-bind:messages="messages" />
 
     <Instructions ref="instructions" v-if="!session.active"/>
@@ -29,28 +31,35 @@ import ActiveSessionView from '@/components/ActiveSessionView.vue'
 import Instructions from '@/components/Instructions.vue'
 import HowtoQuestionMark from '@/components/HowtoQuestionMark.vue'
 import WelcomeMessage from '@/components/WelcomeMessage.vue'
+import NotificationBox from '@/components/NotificationBox.vue'
 
 export default {
   name: 'app',
   methods: {
+    showNotification(args) {
+      let { displayNotification } = this.$refs.notificationbox;
+      displayNotification(args)
+    },
     async forwardMessageToSocket(message) {
       await this.socket.send(JSON.stringify({
         type: 'peer_message',
         text: message
       }))
+      this.showNotification({ message: "Snippet sent" })
     },
     async sendFile(file) {
       const reader = new FileReader();
       const upload_id = this.pending_uploads.push(reader) - 1
       console.log('hello from sendFile')
-      reader.onload = () => {
+      reader.onload = async () => {
         console.log('loaded')
         console.log(this.socket)
-        this.socket.send(JSON.stringify({
+        await this.socket.send(JSON.stringify({
           type: 'file',
           filename: file.name,
           local_id: upload_id
         }))
+        this.showNotification({ message: "File sent" })
       }
       reader.readAsArrayBuffer(file)
     },
@@ -126,6 +135,7 @@ export default {
     }
   },
   components: {
+    NotificationBox,
     QRComponent,
     ActiveSessionView,
     Instructions,

@@ -1,6 +1,5 @@
 <template>
   <div id="active_session_view">
-    <NotificationBox ref="notificationbox" />
     <div id="clips_container" ref="clips_container">
       <Clips
         v-bind:messages="messages"
@@ -14,7 +13,6 @@
 </template>
 
 <script>
-import NotificationBox from '@/components/NotificationBox.vue'
 import Clips from '@/components/Clips.vue'
 
 export default {
@@ -34,17 +32,15 @@ export default {
       this.$refs.files.click();
     },
     onCopy(e) {
-      let { notificationbox } = this.$refs;
       if(e) {
-        notificationbox.displayNotification({ message: "Failed to copy :-(" })
+        this.$emit('notification', { message: "Failed to copy :-(" })
         return;
       }
-      notificationbox.displayNotification({ message: "Copied!", timeout: 1400 })
+      this.$emit('notification', { message: "Copied!", timeout: 1400 })
     },
     sendMessage() {
-      let { displayNotification } = this.$refs.notificationbox;
       if(this.message === '') {
-        displayNotification({ message: "Paste something to send it" })
+        this.$emit('notification', { message: "Paste something to send it" })
         this.$refs['pastearea'].focus()
         return;
       }
@@ -58,7 +54,6 @@ export default {
     }
   },
   components: {
-    NotificationBox,
     Clips
   }
 }
