@@ -10,7 +10,7 @@
           </v-card-title>
           <v-card-actions>
             <v-btn color="primary"
-                v-clipboard:copy="message"
+                v-clipboard:copy="message.content"
                 v-clipboard:success="emitCopy"
                 v-clipboard:error="emitCopyError">
                   <v-icon>file_copy</v-icon> &nbsp Copy
