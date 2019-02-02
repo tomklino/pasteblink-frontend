@@ -4,6 +4,7 @@ import App from './App.vue'
 
 import VueClipboard from 'vue-clipboard2'
 import VueScrollTo from 'vue-scrollto';
+import router from './router'
 
 Vue.use(VueScrollTo)
 
@@ -13,5 +14,6 @@ Vue.use(VueClipboard)
 Vue.config.productionTip = false
 
 new Vue({
-  render: h => h(App),
+  router,
+  render: h => h(App)
 }).$mount('#app')

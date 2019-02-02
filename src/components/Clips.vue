@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-layout id="clips" ref="clips" justify-left row wrap>
-      <v-flex xs4 class="message pa-2" v-for="(message, index) in messages" :key="index">
+      <v-flex xs12 sm6 md4 class="message pa-2" v-for="(message, index) in messages" :key="index">
         <v-card v-if="message.type === 'plaintext'" color="blue-grey darken-2" class="white--text clipcard">
           <v-card-title primary-title>
             <div class="message_text">

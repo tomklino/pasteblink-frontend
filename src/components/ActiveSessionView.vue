@@ -5,8 +5,14 @@
         v-bind:messages="messages"
         v-on:copy="onCopy" />
     </div>
-    <v-btn id="send_file" large color="primary" ref="send_file" v-on:click.native="openFileSelection">send file</v-btn>
-    <v-btn id="sendbutton" large color="primary" v-on:click.native="sendMessage" >send snippet</v-btn>
+    <v-layout row justify-center>
+      <v-flex xs6 sm2>
+        <v-btn id="send_file" color="primary" md-large xs-small ref="send_file" v-on:click.native="openFileSelection">send file</v-btn>
+      </v-flex>
+      <v-flex xs6 sm2>
+        <v-btn id="sendbutton" color="primary" md-large xs-small v-on:click.native="sendMessage" >send snippet</v-btn>
+      </v-flex>
+    </v-layout>
     <input style="display: none" type="file" ref="files" id="files" name="files[]" multiple />
     <v-textarea id="pastearea" ref="pastearea" outline label="paste here" rows="12" cols="30" v-model='message' />
   </div>

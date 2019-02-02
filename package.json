@@ -5,14 +5,16 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "cloud_build": "./gcloud_build.py --project-link gcr.io/pasteblink-222512/pasteblink-frontend --project-name pasteblink-222512 --config cloudbuild.yml",
     "test": "mocha tests/bootstrap.js --recursive tests",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "cloud_build": "./gcloud_build.py --project-link gcr.io/pasteblink-222512/pasteblink-frontend --project-name pasteblink-222512 --config cloudbuild.yml"
   },
   "dependencies": {
     "qrcode": "^1.3.2",
     "vue": "^2.5.17",
     "vue-clipboard2": "^0.2.1",
+    "vue-qrcode-reader": "^1.3.4",
+    "vue-router": "^3.0.1",
     "vue-scrollto": "^2.13.0",
     "vuetify": "^1.3.0"
   },

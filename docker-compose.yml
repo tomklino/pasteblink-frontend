@@ -1,7 +1,7 @@
 version: '3.0'
 services:
   # frontend:
-  #   image: "gcr.io/pasteblink-222512/pasteblink-frontend:v13"
+  #   image: "gcr.io/pasteblink-222512/pasteblink-frontend:v17"
   frontend:
     image: "mhart/alpine-node:11"
     volumes:
@@ -23,7 +23,7 @@ services:
       - "8888:8888"
       - "3000:3000"
   # server:
-  #   image: "gcr.io/pasteblink-222512/pasteblink:v18"
+  #   image: "gcr.io/pasteblink-222512/pasteblink:v20"
   #   ports:
   #     - "8888:8888"
   #     - "3000:3000"
