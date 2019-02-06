@@ -24,7 +24,7 @@ describe('integration tests', function () {
   it('should have the correct page title', async function () {
     this.timeout('2s')
     this.slow('0.3s')
-    expect(await page_1.title()).to.eql('pasteblink-frontend');
+    expect(await page_1.title()).to.eql('clipbird');
   });
 
   it('should pair 2 users together', async function() {
