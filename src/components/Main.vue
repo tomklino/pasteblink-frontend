@@ -1,7 +1,6 @@
 <template>
   <div>
     <NotificationBox ref="notificationbox" />
-    <WelcomeMessage v-on:show-video="showVideo()" v-bind:showing="welcome_message_showing" />
 
     <div id="early_alpha_message">
       Early alpha - currenty only supports Computer to Computer (same room)
@@ -28,7 +27,6 @@ import QRComponent from '@/components/QRComponent.vue'
 import ActiveSessionView from '@/components/ActiveSessionView.vue'
 import Instructions from '@/components/Instructions.vue'
 import HowtoQuestionMark from '@/components/HowtoQuestionMark.vue'
-import WelcomeMessage from '@/components/WelcomeMessage.vue'
 import NotificationBox from '@/components/NotificationBox.vue'
 
 export default {
@@ -71,10 +69,6 @@ export default {
         .catch((err) => {
           console.log(err)
         })
-    },
-    showVideo() {
-      this.welcome_message_showing = false;
-      this.$refs.howto.launchDialog();
     }
   },
   mounted() {
@@ -134,7 +128,6 @@ export default {
   },
   data() {
     return {
-      welcome_message_showing: true,
       debug: false,
       qr_url: '',
       socket: null,
@@ -152,8 +145,7 @@ export default {
     QRComponent,
     ActiveSessionView,
     Instructions,
-    HowtoQuestionMark,
-    WelcomeMessage
+    HowtoQuestionMark
   }
 }
 </script>

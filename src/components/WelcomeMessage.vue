@@ -1,6 +1,6 @@
 <template>
   <div id="welcome">
-    <v-dialog v-model="show_message" max-width="700px">
+    <v-dialog v-model="show_message" @input="onDialogInput" max-width="700px">
       <v-card >
         <v-card-title primary-title>
           <div>
@@ -34,7 +34,7 @@
 
         <v-card-actions id="buttons">
           <v-btn id="show_video_button" @click="$emit('show-video')" flat color="info">Show me how it works!</v-btn>
-          <v-btn id="gotit_button" @click="show_message=false" flat color="success">Got it!</v-btn>
+          <v-btn id="gotit_button" @click="handleCloseButton" flat color="success">Got it!</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -46,6 +46,18 @@ export default {
   name: 'WelcomeMessage',
   props: {
     showing: Boolean
+  },
+  methods: {
+    handleCloseButton() {
+      this.show_message = false;
+      this.$emit('close');
+    },
+    onDialogInput() {
+      console.log('dialog input!')
+      if(this.show_message === false) {
+        this.$emit('close')
+      }
+    }
   },
   data() {
     return {

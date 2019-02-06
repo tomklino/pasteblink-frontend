@@ -7,6 +7,18 @@
   </v-app>
 </template>
 
+<script>
+  export default {
+    name: "App",
+    metaInfo: {
+      meta: [
+        { charset: 'utf-8' },
+        { name: 'description', content: 'cilpbird creates a linke between two devices to share text or code snippets and transfer files' }
+      ]
+    }
+  }
+</script>
+
 <style scoped>
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;

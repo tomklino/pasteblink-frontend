@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import Meta from 'vue-meta'
 import './plugins/vuetify'
 import App from './App.vue'
 
@@ -12,6 +13,8 @@ VueClipboard.config.autoSetContainer = true // add this line
 Vue.use(VueClipboard)
 
 Vue.config.productionTip = false
+
+Vue.use(Meta)
 
 new Vue({
   router,
