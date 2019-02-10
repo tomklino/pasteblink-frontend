@@ -7,4 +7,4 @@ WORKDIR /opt/static-server
 
 COPY dist /opt/static-server/public
 
-ENTRYPOINT [ "http-server" ]
+ENTRYPOINT [ "http-server", "--gzip" ]
