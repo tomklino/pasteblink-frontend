@@ -1,7 +1,7 @@
 <template>
   <div id="welcome">
     <v-dialog v-model="show_message" @input="onDialogInput" max-width="700px">
-      <v-card >
+      <v-card v-if="!showing_video">
         <v-card-title primary-title>
           <div>
             <h3 class="headline mb-0">Heya!</h3>
@@ -33,8 +33,14 @@
         </v-card-title>
 
         <v-card-actions id="buttons">
-          <v-btn id="show_video_button" @click="$emit('show-video')" flat color="info">Show me how it works!</v-btn>
+          <v-btn id="show_video_button" @click="showing_video=true" flat color="info">Show me how it works!</v-btn>
           <v-btn id="gotit_button" @click="handleCloseButton" flat color="success">Got it!</v-btn>
+        </v-card-actions>
+      </v-card>
+      <v-card v-if="showing_video">
+        <iframe width="640" height="360" src="https://www.youtube-nocookie.com/embed/xkaPmNuDsQ8" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <v-card-actions id="buttons">
+          <v-btn @click="handleCloseButton" flat color="info">Close</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -61,6 +67,7 @@ export default {
   },
   data() {
     return {
+      showing_video: false,
       show_message: this.showing
     }
   }
